@@ -1,0 +1,299 @@
+/* Universal CSS */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fffefc;
+  margin: 0;
+  font-family: "Overpass Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.75em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+h4 {
+  font-size: 1em;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 0.875em;
+  line-height: 1.5;
+}
+
+button {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 11px;
+  padding: 12px 32px;
+  font-size: 0.75em;
+  font-family: "Overpass Mono", monospace;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #b6b6b6;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+a,
+a.visited {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.titleFont {
+  font-family: "Nothing You Could Do", cursive;
+  color: #f9abab;
+}
+
+#footer {
+  position: fixed;
+  display: block;
+  text-align: center;
+  width: 100vw;
+  height: 30px;
+  bottom: 0px;
+  background-color: #fffefc;
+  z-index: 9;
+}
+
+#footer p {
+  font-size: 0.75em;
+  letter-spacing: -0.8px;
+}
+
+/* Index CSS */
+/* Index CSS */
+/* Index CSS */
+/* Index CSS */
+/* Index CSS */
+/* Index CSS */
+/* Index CSS */
+
+.wrapperIndex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.wrapperTitleButton {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  justify-content: center;
+}
+
+.titleIndex {
+  font-family: "Nothing You Could Do", cursive;
+  color: #f9abab;
+  transform: rotate(-25deg);
+  position: absolute;
+  align-self: center;
+  margin-right: 7.5em;
+  margin-bottom: 3.3em;
+}
+
+.spotifyButton {
+  padding: 0px 15px 0px 0px;
+  line-height: 40px;
+  text-align: left;
+  text-indent: 3px;
+  padding-left: 5px;
+  width: 195px;
+  height: 42px;
+  align-self: center;
+}
+
+.spotifyButton img {
+  float: left;
+  width: 40px;
+  padding: 0;
+}
+
+.infoText {
+  width: 300px;
+  text-align: center;
+  align-self: center;
+}
+
+.aboutText {
+  transform: rotate(-10deg);
+  align-self: center;
+  margin-right: -6em;
+  width: 200px;
+}
+
+/* Callback CSS */
+/* Callback CSS */
+/* Callback CSS */
+/* Callback CSS */
+/* Callback CSS */
+/* Callback CSS */
+/* Callback CSS */
+
+.wrapperCallback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.wrapperTitle {
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+}
+
+.titleCallback {
+  font-family: "Nothing You Could Do", cursive;
+  color: #f9abab;
+  transform: rotate(-25deg);
+  position: absolute;
+  align-self: center;
+  margin-right: 15em;
+  margin-bottom: 0.5em;
+}
+
+.spotifyHolder {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  background: rgba(196, 196, 196, 0.1);
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.spotifyHolder p {
+  font-size: 0.75em;
+  line-height: 1;
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.spotifyHolder a {
+  text-decoration: none;
+}
+
+.spotifyHolder a.visited {
+  text-decoration: none;
+}
+
+.cover {
+  width: 400px;
+}
+
+.bpm {
+  padding-top: 13px;
+}
+
+.spotidyDiv {
+  display: flex;
+}
+
+.spotify {
+  width: 50px;
+  position: absolute;
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: -23px;
+}
+
+.releasedate {
+  font-size: 0.75em;
+  transform: rotate(-90deg);
+  position: absolute;
+  align-self: center;
+  margin-right: 39.5em;
+  margin-bottom: 2em;
+  width: 190px;
+}
+
+/* Animtations */
+/* Animtations */
+/* Animtations */
+/* Animtations */
+/* Animtations */
+/* Animtations */
+/* Animtations */
+
+.loadingAni {
+  background: linear-gradient(270deg, #000000, #f9f8f6, #f9f8f6, #000000);
+  background-size: 800% 800%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: loading 10s ease infinite;
+  -moz-animation: loading 10s ease infinite;
+  animation: loading 10s ease infinite;
+}
+
+@-webkit-keyframes loading {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes loading {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes loading {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* .active {
+  text-decoration: none;
+} */
