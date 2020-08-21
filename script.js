@@ -1,6 +1,6 @@
 const signIn = () => {
   window.location =
-    "https://accounts.spotify.com/authorize?client_id=c6f698a558b04c13bed1b0a399af63ea&response_type=token&redirect_uri=http://127.0.0.1:5501/callback.html&scope=user-read-currently-playing%20user-read-playback-state";
+    "https://accounts.spotify.com/authorize?client_id=c6f698a558b04c13bed1b0a399af63ea&response_type=token&redirect_uri=https://trackify-steel.vercel.app/callback.html&scope=user-read-currently-playing%20user-read-playback-state";
 };
 
 const access_token = window.location.hash.replace("&", "=").split("=");
