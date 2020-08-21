@@ -1,7 +1,16 @@
 /* Universal CSS */
+/* Universal CSS */
+/* Universal CSS */
+/* Universal CSS */
+/* Universal CSS */
+/* Universal CSS */
+/* Universal CSS */
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
 }
 
 body {
@@ -84,10 +93,16 @@ a.visited {
   bottom: 0px;
   background-color: #fffefc;
   z-index: 9;
+  font-size: 0.8em;
+  letter-spacing: -0.8px;
+}
+
+#footer a {
+  font-size: 1em;
+  letter-spacing: -0.8px;
 }
 
 #footer p {
-  font-size: 0.75em;
   letter-spacing: -0.8px;
 }
 
@@ -119,8 +134,11 @@ a.visited {
   transform: rotate(-25deg);
   position: absolute;
   align-self: center;
-  margin-right: 7.5em;
-  margin-bottom: 3.3em;
+  /* margin-right: 7.5em;
+  margin-bottom: 3.3em; */
+  padding-right: 6em;
+  padding-bottom: 5.35em;
+  z-index: 1;
 }
 
 .spotifyButton {
@@ -129,9 +147,11 @@ a.visited {
   text-align: left;
   text-indent: 3px;
   padding-left: 5px;
-  width: 195px;
+  width: 200px;
   height: 42px;
   align-self: center;
+  font-size: 0.75em;
+  z-index: 2;
 }
 
 .spotifyButton img {
@@ -141,6 +161,7 @@ a.visited {
 }
 
 .infoText {
+  padding-top: 5px;
   width: 300px;
   text-align: center;
   align-self: center;
@@ -151,6 +172,7 @@ a.visited {
   align-self: center;
   margin-right: -6em;
   width: 200px;
+  padding-top: 15px;
 }
 
 /* Callback CSS */
@@ -180,8 +202,9 @@ a.visited {
   transform: rotate(-25deg);
   position: absolute;
   align-self: center;
-  margin-right: 15em;
-  margin-bottom: 0.5em;
+  /* margin-right: 15em;
+  margin-bottom: 0.5em; */
+  padding-right: 15em;
 }
 
 .spotifyHolder {
@@ -195,7 +218,7 @@ a.visited {
 
 .spotifyHolder p {
   font-size: 0.75em;
-  line-height: 1;
+  line-height: 0.9;
   margin-bottom: 15px;
   margin-left: 15px;
 }
@@ -213,7 +236,7 @@ a.visited {
 }
 
 .bpm {
-  padding-top: 13px;
+  padding-top: 5px;
 }
 
 .spotidyDiv {
@@ -236,9 +259,10 @@ a.visited {
   transform: rotate(-90deg);
   position: absolute;
   align-self: center;
-  margin-right: 39.5em;
-  margin-bottom: 2em;
+  /* margin-right: 39.5em;
+  margin-bottom: 2em; */
   width: 190px;
+  padding-bottom: 420px;
 }
 
 /* Animtations */
