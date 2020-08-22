@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "NothingYouCouldDo-Regular";
+  src: url("assets/NothingYouCouldDo-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+
 /* Universal CSS */
 /* Universal CSS */
 /* Universal CSS */
@@ -37,13 +42,13 @@ h1 {
 }
 
 h2 {
-  font-family: "Nothing You Could Do", cursive;
+  font-family: "NothingYouCouldDo-Regular", cursive;
   font-weight: 400;
   font-size: 1.75em;
 }
 
 h3 {
-  font-family: "Nothing You Could Do", cursive;
+  font-family: "NothingYouCouldDo-Regular", cursive;
   font-weight: 400;
   font-size: 1.2em;
 }
@@ -84,7 +89,7 @@ a.visited {
 }
 
 .titleFont {
-  font-family: "Nothing You Could Do", cursive;
+  font-family: "NothingYouCouldDo-Regular", cursive;
   font-weight: 400;
   color: #f9abab;
 }
@@ -134,7 +139,7 @@ a.visited {
 }
 
 .titleIndex {
-  font-family: "Nothing You Could Do", cursive;
+  font-family: "NothingYouCouldDo-Regular", cursive;
   font-weight: 400;
   color: #f9abab;
   transform: rotate(-25deg);
@@ -202,7 +207,7 @@ a.visited {
 }
 
 .titleCallback {
-  font-family: "Nothing You Could Do", cursive;
+  font-family: "NothingYouCouldDo-Regular", cursive;
   color: #f9abab;
   transform: rotate(-25deg);
   position: absolute;
