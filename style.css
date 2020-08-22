@@ -138,7 +138,7 @@ a.visited {
   margin-bottom: 3.3em; */
   padding-right: 6em;
   padding-bottom: 5.35em;
-  z-index: 1;
+  z-index: -1;
 }
 
 .spotifyButton {
@@ -151,7 +151,6 @@ a.visited {
   height: 42px;
   align-self: center;
   font-size: 0.75em;
-  z-index: 2;
 }
 
 .spotifyButton img {
@@ -204,7 +203,9 @@ a.visited {
   align-self: center;
   /* margin-right: 15em;
   margin-bottom: 0.5em; */
-  padding-right: 15em;
+  padding-right: 13.5em;
+  padding-bottom: 6.3em;
+  z-index: -1;
 }
 
 .spotifyHolder {
@@ -275,7 +276,7 @@ a.visited {
 
 .loadingAni {
   background: linear-gradient(270deg, #000000, #f9f8f6, #f9f8f6, #000000);
-  background-size: 800% 800%;
+  background-size: 35% 35%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
