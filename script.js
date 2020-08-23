@@ -134,7 +134,7 @@ const htmlPrint = async (data, data2, data3) => {
 
   document.getElementById("label").innerHTML = data2.label;
   document.getElementById("label").href =
-    "https://open.spotify.com/search/label%3A " + data2.label + "/albums";
+    'https://open.spotify.com/search/label%3A "' + data2.label + '"/albums';
   document.getElementById("label").style.textDecoration = "underline";
 
   document.getElementById("cover").src = data.item.album.images[0].url;
