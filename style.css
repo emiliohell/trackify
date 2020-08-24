@@ -218,8 +218,6 @@ a.visited {
   transform: rotate(-25deg);
   position: absolute;
   align-self: center;
-  /* margin-right: 15em;
-  margin-bottom: 0.5em; */
   padding-right: 13.5em;
   padding-bottom: 6.3em;
   z-index: -1;
@@ -278,8 +276,6 @@ a.visited {
   transform: rotate(-90deg);
   position: absolute;
   align-self: center;
-  /* margin-right: 39.5em;
-  margin-bottom: 2em; */
   width: 190px;
   padding-bottom: 420px;
 }
