@@ -30,7 +30,7 @@ const headers = {
 };
 
 const spotifyPlaying = async () => {
-  console.log("spotifyPlaying");
+  // console.log("spotifyPlaying");
   const response = await fetch("https://api.spotify.com/v1/me/player", headers);
   return response.status === 200 || 201
     ? [response, (json = await response.json())]
@@ -38,7 +38,7 @@ const spotifyPlaying = async () => {
 };
 
 const spotifyGetAlbum = async (data) => {
-  console.log("spotifyGetAlbum");
+  // console.log("spotifyGetAlbum");
   const response = await fetch(
     "https://api.spotify.com/v1/albums/" + data.item.album.id,
     headers
@@ -47,7 +47,7 @@ const spotifyGetAlbum = async (data) => {
 };
 
 const spotifyAnalysis = async (data) => {
-  console.log("spotifyAnalysis");
+  // console.log("spotifyAnalysis");
   const response = await fetch(
     "https://api.spotify.com/v1/audio-analysis/" + data.item.id,
     headers
@@ -58,118 +58,91 @@ const spotifyAnalysis = async (data) => {
 /// TO THE HTML
 
 const htmlPrint = async (data, data2, data3) => {
-  console.log("htmlPrint");
-  ////
-  // console.log(data);
-  // console.log(data2);
-  // console.log(data3);
-  ////
-  // console.log("/// Data from spotifyPlaying ///");
-  // console.log("Artist: " + data.item.artists[0].name);
-  // console.log("Artist URL: " + data.item.artists[0].external_urls.spotify);
-  // console.log("Song: " + data.item.name);
-  // console.log("Song Duration: " + data.item.duration_ms);
-  // console.log("Song Progress: " + data.progress_ms);
-  // console.log("Album Cover: " + data.item.album.images[0].url);
-  // console.log("Album Name: " + data.item.album.name);
-  // console.log("Album ID: " + data.item.album.id);
-  // console.log("Album Release Date: " + data.item.album.release_date);
-  // console.log("Album Tracks: " + data.item.album.total_tracks);
-  // console.log("Album URL: " + data.item.album.external_urls.spotify);
-  ////
-  // console.log("/// Data from spotifyGetAlbum ///");
-  // console.log("Album Label: " + data2.label);
-  ////
-  // console.log("/// Data from spotifyAnalysis ///");
-  // console.log("Track BPM: " + data3.track.tempo);
-  // console.log("Track KEY: " + data3.track.key);
-  // console.log("Track MODE: " + data3.track.mode);
-  // console.log("Track TIME SIGNATURE: " + data3.track.time_signature);
-  ////
+  // console.log("htmlPrint");
 
-  const trackTime = (ms) => {
-    const m = Math.floor(ms / 60000);
-    const s = ((ms % 60000) / 1000).toFixed(0);
-    return m + ":" + (s < 10 ? "0" : "") + s;
+  const artist = {
+    name: data.item.artists[0].name,
+    url: data.item.artists[0].external_urls.spotify,
+    album: data.item.album.name,
+    albumUrl: data.item.album.external_urls.spotify,
+    track: data.item.name,
+    trackDuration:
+      Math.floor(data.item.duration_ms / 60000) +
+      ":" +
+      (((data.item.duration_ms % 60000) / 1000).toFixed(0) < 10 ? "0" : "") +
+      ((data.item.duration_ms % 60000) / 1000).toFixed(0),
+    trackNumber: data.item.track_number,
+    totalTracks: data2.total_tracks,
+    label: data2.label,
+    labelUrl:
+      'https://open.spotify.com/search/label%3A "' + data2.label + '"/albums',
+    cover: data.item.album.images[0].url,
+    bpm: Math.round(data3.track.tempo),
+    key: [
+      "C",
+      "C♯/D♭",
+      "D",
+      "D♯/E♭",
+      "E",
+      "F",
+      "F♯/G♭",
+      "G",
+      "G♯/A♭",
+      "A",
+      "A♯/B♭",
+      "B",
+      "C",
+    ][data3.track.key],
+    mode: data3.track.mode === 0 ? "Minor" : "Major",
+    signature: data3.track.time_signature + "/4",
+    releaseDate: data.item.album.release_date,
   };
 
-  const mode = data3.track.mode === 0 ? "Minor" : "Major";
-  const key = [
-    "C",
-    "C♯/D♭",
-    "D",
-    "D♯/E♭",
-    "E",
-    "F",
-    "F♯/G♭",
-    "G",
-    "G♯/A♭",
-    "A",
-    "A♯/B♭",
-    "B",
-    "C",
-  ];
-
-  document.getElementById("artist").innerHTML = data.item.artists[0].name;
-  document.getElementById("artist").href =
-    data.item.artists[0].external_urls.spotify;
+  document.getElementById("artist").innerHTML = artist.name;
+  document.getElementById("artist").href = artist.url;
   document.getElementById("artist").style.textDecoration = "underline";
-
-  document.getElementById("album").innerHTML = data.item.album.name;
-  document.getElementById("album").href = data.item.album.external_urls.spotify;
+  document.getElementById("album").innerHTML = artist.album;
+  document.getElementById("album").href = artist.albumUrl;
   document.getElementById("album").style.textDecoration = "underline";
-
   document.getElementById("track").innerHTML =
-    data.item.name +
+    artist.track +
     " / " +
-    trackTime(data.item.duration_ms) +
+    artist.trackDuration +
     " / " +
-    data.item.track_number +
+    artist.trackNumber +
     "/" +
-    data2.total_tracks;
-
-  document.getElementById("label").innerHTML = data2.label;
-  document.getElementById("label").href =
-    'https://open.spotify.com/search/label%3A "' + data2.label + '"/albums';
+    artist.totalTracks;
+  document.getElementById("label").innerHTML = artist.label;
+  document.getElementById("label").href = artist.labelUrl;
   document.getElementById("label").style.textDecoration = "underline";
-
-  document.getElementById("cover").src = data.item.album.images[0].url;
-  document.getElementById("bpm").innerHTML = Math.round(data3.track.tempo);
-  document.getElementById("key").innerHTML = key[data3.track.key];
-
-  document.getElementById("mode").innerHTML = mode;
-
-  document.getElementById("signature").innerHTML =
-    data3.track.time_signature + "/4";
-
-  document.getElementById("releasedate").innerHTML =
-    data.item.album.release_date;
+  document.getElementById("cover").src = artist.cover;
+  document.getElementById("bpm").innerHTML = artist.bpm;
+  document.getElementById("key").innerHTML = artist.key;
+  document.getElementById("mode").innerHTML = artist.mode;
+  document.getElementById("signature").innerHTML = artist.signature;
+  document.getElementById("releasedate").innerHTML = artist.releaseDate;
 };
 
 /// THE API DATA ROUTER
 
 async function dataRouter() {
-  console.log("dataRouter");
+  // console.log("dataRouter");
   try {
     const data = await spotifyPlaying();
-    const spotifyPlayingStatus = data[0].status;
-    const spotifyPlayingData = data[1];
+    const fetchStatus = data[0].status;
+    const playingData = data[1];
     const currentTrack = data[1].item.name;
     const displayTrack = document
       .getElementById("track")
       .innerHTML.split(" / ")[0];
 
-    if (spotifyPlayingStatus === 200 && displayTrack != currentTrack) {
-      const spotifyGetAlbumData = await spotifyGetAlbum(spotifyPlayingData);
-      const spotifyAnalysisData = await spotifyAnalysis(spotifyPlayingData);
-      await htmlPrint(
-        spotifyPlayingData,
-        spotifyGetAlbumData,
-        spotifyAnalysisData
-      );
+    if (fetchStatus === 200 && displayTrack != currentTrack) {
+      const getAlbumData = await spotifyGetAlbum(playingData);
+      const analysisData = await spotifyAnalysis(playingData);
+      await htmlPrint(playingData, getAlbumData, analysisData);
 
       // Auth has Expired error catcher:
-    } else if (spotifyPlayingStatus === 401) {
+    } else if (fetchStatus === 401) {
       window.location.pathname === "/callback.html" &&
         (document.getElementById("cover").src = "assets/expiredError.png");
       setTimeout(() => {
@@ -178,15 +151,15 @@ async function dataRouter() {
 
       // No new Data error catcher:
     } else {
-      console.log("No new data");
-      console.log(spotifyPlayingStatus);
+      // console.log("No new data");
+      // console.log(fetchStatus);
     }
 
     // Spotify is not Running Catcher: (See To Do)
   } catch (err) {
     document.getElementById("cover").src = "assets/spotifyError.png";
-    console.log("error catcher / no info / spotify is not running");
-    console.log(err);
+    // console.log("error catcher / no info / spotify is not running");
+    // console.log(err);
   }
 }
 
