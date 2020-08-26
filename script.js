@@ -71,8 +71,7 @@ const htmlPrint = async (data, data2, data3) => {
       ":" +
       (((data.item.duration_ms % 60000) / 1000).toFixed(0) < 10 ? "0" : "") +
       ((data.item.duration_ms % 60000) / 1000).toFixed(0),
-    trackNumber: data.item.track_number,
-    totalTracks: data2.total_tracks,
+    trackNumber: data.item.track_number + "/" + data2.total_tracks,
     label: data2.label,
     labelUrl:
       'https://open.spotify.com/search/label%3A "' + data2.label + '"/albums',
@@ -105,13 +104,7 @@ const htmlPrint = async (data, data2, data3) => {
   document.getElementById("album").href = artist.albumUrl;
   document.getElementById("album").style.textDecoration = "underline";
   document.getElementById("track").innerHTML =
-    artist.track +
-    " / " +
-    artist.trackDuration +
-    " / " +
-    artist.trackNumber +
-    "/" +
-    artist.totalTracks;
+    artist.track + " / " + artist.trackDuration + " / " + artist.trackNumber;
   document.getElementById("label").innerHTML = artist.label;
   document.getElementById("label").href = artist.labelUrl;
   document.getElementById("label").style.textDecoration = "underline";
