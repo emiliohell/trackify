@@ -1,72 +1,67 @@
+/// THE SIGN IN
+
 const signIn = () => {
   const clientID = "c6f698a558b04c13bed1b0a399af63ea";
-  const redirectURL = "https://trackify-steel.vercel.app/callback.html";
+  const redirectURL = [
+    "https://trackify-steel.vercel.app/callback.html",
+    "http://127.0.0.1:5501/callback.html",
+  ];
   const scope = ["user-read-currently-playing", "user-read-playback-state"];
 
   window.location =
     "https://accounts.spotify.com/authorize?client_id=" +
     clientID +
     "&response_type=token&redirect_uri=" +
-    redirectURL +
+    redirectURL[1] +
     "&scope=" +
     scope[0] +
     "%20" +
     scope[1];
 };
 
-const access_token = window.location.hash.replace("&", "=").split("=");
+/// THE API FETCHES
 
 const headers = {
   headers: {
-    Authorization: "Bearer " + access_token[1],
+    Authorization:
+      "Bearer " + window.location.hash.replace("&", "=").split("=")[1],
   },
 };
 
 const spotifyPlaying = async () => {
-  try {
-    const response = await fetch(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      headers
-    );
-    console.log(response);
-    if (response.status != 200) {
-      return console.log("401 - Account Token Expired");
-    } else {
-      json = await response.json();
-      // console.log(json);
-      return json;
-    }
-  } catch (error) {
-    console.log(error);
-    console.log("Play something fool!");
-  }
+  console.log("spotifyPlaying");
+  const response = await fetch("https://api.spotify.com/v1/me/player", headers);
+  return response.status === 200 || 201
+    ? [response, (json = await response.json())]
+    : [response];
 };
 
 const spotifyGetAlbum = async (data) => {
+  console.log("spotifyGetAlbum");
   const response = await fetch(
     "https://api.spotify.com/v1/albums/" + data.item.album.id,
     headers
   );
-  json = await response.json();
-  // console.log(json);
-  return json;
+  return (json = await response.json());
 };
 
 const spotifyAnalysis = async (data) => {
+  console.log("spotifyAnalysis");
   const response = await fetch(
     "https://api.spotify.com/v1/audio-analysis/" + data.item.id,
     headers
   );
-  json = await response.json();
-  // console.log(json);
-  return json;
+  return (json = await response.json());
 };
 
+/// TO THE HTML
+
 const htmlPrint = async (data, data2, data3) => {
+  console.log("htmlPrint");
   ////
-  console.log(data);
-  console.log(data2);
-  console.log(data3);
+  // console.log(data);
+  // console.log(data2);
+  // console.log(data3);
   ////
   // console.log("/// Data from spotifyPlaying ///");
   // console.log("Artist: " + data.item.artists[0].name);
@@ -148,22 +143,51 @@ const htmlPrint = async (data, data2, data3) => {
 
   document.getElementById("releasedate").innerHTML =
     data.item.album.release_date;
-  // document.getElementById("loginButton").innerText = "Refresh";
 };
 
+/// THE API DATA ROUTER
+
 async function dataRouter() {
+  console.log("dataRouter");
   try {
     const data = await spotifyPlaying();
-    const data2 = await spotifyGetAlbum(data);
-    const data3 = await spotifyAnalysis(data);
-    await htmlPrint(data, data2, data3);
-  } catch (error) {
-    error;
+    // const response = data[0];
+    // const json = data[1];
+    // const currentTrack = data[1].item.name;
+    // const displayTrack = document
+    //   .getElementById("track")
+    //   .innerHTML.split(" / ")[0];
+
+    if (
+      data[0].status === 200 &&
+      document.getElementById("track").innerHTML.split(" / ")[0] !=
+        data[1].item.name
+    ) {
+      const data2 = await spotifyGetAlbum(data[1]);
+      const data3 = await spotifyAnalysis(data[1]);
+      await htmlPrint(data[1], data2, data3);
+    } else if (data[0].status === 401) {
+      if (window.location.pathname === "/callback.html") {
+        alert("Your session has expired! Site will refresh in 3 seconds.");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 3000);
+      }
+    } else {
+      console.log("No new data");
+      console.log(data[0].status);
+    }
+  } catch (err) {
+    console.log("error catcher / no info / spotify is not running");
+    console.log(err);
   }
 }
 
-dataRouter();
+// THE REFRESHER
 
-// setInterval(function () {
-//   dataRouter();
-// }, 5000);
+if (window.location.pathname === "/callback.html") {
+  dataRouter();
+  setInterval(() => {
+    dataRouter();
+  }, 10000);
+}
