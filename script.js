@@ -131,12 +131,12 @@ async function dataRouter() {
     const data = await spotifyPlaying();
     const fetchStatus = data[0].status;
     const playingData = data[1];
-    const currentTrack = data[1].item.name;
+    // const currentTrack = data[1].item.name;
     const displayTrack = document
       .getElementById("track")
       .innerHTML.split(" / ")[0];
 
-    if (fetchStatus === 200 && displayTrack != currentTrack) {
+    if (fetchStatus === 200 && displayTrack != data[1].item.name) {
       const getAlbumData = await spotifyGetAlbum(playingData);
       const analysisData = await spotifyAnalysis(playingData);
       await htmlPrint(playingData, getAlbumData, analysisData);
