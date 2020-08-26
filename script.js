@@ -12,11 +12,12 @@ const signIn = () => {
     "https://accounts.spotify.com/authorize?client_id=" +
     clientID +
     "&response_type=token&redirect_uri=" +
-    redirectURL[0] +
+    redirectURL[1] +
     "&scope=" +
-    scope[0] +
-    "%20" +
-    scope[1];
+    scope
+      .map((x) => x + "%20")
+      .join("")
+      .slice(0, -3);
 };
 
 /// THE API FETCHES
@@ -86,7 +87,7 @@ const htmlPrint = async (data, data2, data3) => {
   // console.log("Track TIME SIGNATURE: " + data3.track.time_signature);
   ////
 
-  const time = (ms) => {
+  const trackTime = (ms) => {
     const m = Math.floor(ms / 60000);
     const s = ((ms % 60000) / 1000).toFixed(0);
     return m + ":" + (s < 10 ? "0" : "") + s;
@@ -121,7 +122,7 @@ const htmlPrint = async (data, data2, data3) => {
   document.getElementById("track").innerHTML =
     data.item.name +
     " / " +
-    time(data.item.duration_ms) +
+    trackTime(data.item.duration_ms) +
     " / " +
     data.item.track_number +
     "/" +
@@ -151,33 +152,39 @@ async function dataRouter() {
   console.log("dataRouter");
   try {
     const data = await spotifyPlaying();
-    // const sPlayingResponse = data[0];
-    // const sPlayingJson = data[1];
-    // const currentTrack = data[1].item.name;
-    // const displayTrack = document
-    //   .getElementById("track")
-    //   .innerHTML.split(" / ")[0];
+    const spotifyPlayingStatus = data[0].status;
+    const spotifyPlayingData = data[1];
+    const currentTrack = data[1].item.name;
+    const displayTrack = document
+      .getElementById("track")
+      .innerHTML.split(" / ")[0];
 
-    if (
-      data[0].status === 200 &&
-      document.getElementById("track").innerHTML.split(" / ")[0] !=
-        data[1].item.name
-    ) {
-      const data2 = await spotifyGetAlbum(data[1]);
-      const data3 = await spotifyAnalysis(data[1]);
-      await htmlPrint(data[1], data2, data3);
-    } else if (data[0].status === 401) {
-      if (window.location.pathname === "/callback.html") {
-        alert("Your session has expired! Site will refresh in 3 seconds.");
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 3000);
-      }
+    if (spotifyPlayingStatus === 200 && displayTrack != currentTrack) {
+      const spotifyGetAlbumData = await spotifyGetAlbum(spotifyPlayingData);
+      const spotifyAnalysisData = await spotifyAnalysis(spotifyPlayingData);
+      await htmlPrint(
+        spotifyPlayingData,
+        spotifyGetAlbumData,
+        spotifyAnalysisData
+      );
+
+      // Auth has Expired error catcher:
+    } else if (spotifyPlayingStatus === 401) {
+      window.location.pathname === "/callback.html" &&
+        (document.getElementById("cover").src = "assets/expiredError.png");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
+
+      // No new Data error catcher:
     } else {
       console.log("No new data");
-      console.log(data[0].status);
+      console.log(spotifyPlayingStatus);
     }
+
+    // Spotify is not Running Catcher: (See To Do)
   } catch (err) {
+    document.getElementById("cover").src = "assets/spotifyError.png";
     console.log("error catcher / no info / spotify is not running");
     console.log(err);
   }
