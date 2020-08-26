@@ -12,7 +12,7 @@ const signIn = () => {
     "https://accounts.spotify.com/authorize?client_id=" +
     clientID +
     "&response_type=token&redirect_uri=" +
-    redirectURL[1] +
+    redirectURL[0] +
     "&scope=" +
     scope[0] +
     "%20" +
@@ -151,8 +151,8 @@ async function dataRouter() {
   console.log("dataRouter");
   try {
     const data = await spotifyPlaying();
-    // const response = data[0];
-    // const json = data[1];
+    // const sPlayingResponse = data[0];
+    // const sPlayingJson = data[1];
     // const currentTrack = data[1].item.name;
     // const displayTrack = document
     //   .getElementById("track")
