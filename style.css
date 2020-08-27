@@ -1,3 +1,11 @@
+/* Fonts */
+/* Fonts */
+/* Fonts */
+/* Fonts */
+/* Fonts */
+/* Fonts */
+/* Fonts */
+
 @font-face {
   font-family: "NothingYouCouldDo-Regular";
   src: url("assets/NothingYouCouldDo-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
@@ -202,7 +210,6 @@ a.visited {
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  /* padding-top: 400px; */
 }
 
 .wrapperTitle {
@@ -283,6 +290,51 @@ a.visited {
   align-self: center;
   width: 190px;
   padding-bottom: 420px;
+}
+
+/* Mobile */
+/* Mobile */
+/* Mobile */
+/* Mobile */
+/* Mobile */
+/* Mobile */
+/* Mobile */
+
+@media screen and (max-width: 600px) {
+  .wrapperCallback {
+    padding-top: 15px;
+  }
+
+  .titleCallback {
+    transform: rotate(0deg);
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+
+  .spotifyHolder {
+    max-width: 350px;
+    min-height: 140px;
+  }
+
+  .spotifyHolder p {
+    margin-left: 5px;
+    width: 350px;
+  }
+
+  .cover {
+    width: 350px;
+    height: 350px;
+  }
+
+  .releasedate {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .spotify {
+    margin-top: -70px;
+  }
 }
 
 /* Animtations */
