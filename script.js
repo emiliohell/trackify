@@ -12,7 +12,7 @@ const signIn = () => {
     "https://accounts.spotify.com/authorize?client_id=" +
     clientID +
     "&response_type=token&redirect_uri=" +
-    redirectURL[1] +
+    redirectURL[0] +
     "&scope=" +
     scope
       .map((x) => x + "%20")
