@@ -12,7 +12,7 @@ const signIn = () => {
     "https://accounts.spotify.com/authorize?client_id=" +
     clientID +
     "&response_type=token&redirect_uri=" +
-    redirectURL[0] +
+    redirectURL[1] +
     "&scope=" +
     scope
       .map((x) => x + "%20")
@@ -30,15 +30,13 @@ const headers = {
 };
 
 const spotifyPlaying = async () => {
-  // console.log("spotifyPlaying");
   const response = await fetch("https://api.spotify.com/v1/me/player", headers);
-  return response.status === 200 || 201
+  return response.status === 200
     ? [response, (json = await response.json())]
     : [response];
 };
 
 const spotifyGetAlbum = async (data) => {
-  // console.log("spotifyGetAlbum");
   const response = await fetch(
     "https://api.spotify.com/v1/albums/" + data.item.album.id,
     headers
@@ -47,7 +45,6 @@ const spotifyGetAlbum = async (data) => {
 };
 
 const spotifyAnalysis = async (data) => {
-  // console.log("spotifyAnalysis");
   const response = await fetch(
     "https://api.spotify.com/v1/audio-analysis/" + data.item.id,
     headers
@@ -57,81 +54,97 @@ const spotifyAnalysis = async (data) => {
 
 /// TO THE HTML
 
-const htmlPrint = async (playingData, getAlbumData, analysisData) => {
-  // console.log("htmlPrint");
-
-  const artist = {
-    name: playingData.item.artists[0].name,
-    url: playingData.item.artists[0].external_urls.spotify,
-    album: playingData.item.album.name,
-    albumUrl: playingData.item.album.external_urls.spotify,
-    track:
-      // playingData.item.name,
-      playingData.item.name.length > 25
-        ? playingData.item.name.substring(0, 25) + "..."
-        : playingData.item.name,
-    trackDuration:
-      Math.floor(playingData.item.duration_ms / 60000) +
-      ":" +
-      (((playingData.item.duration_ms % 60000) / 1000).toFixed(0) < 10
-        ? "0"
-        : "") +
-      ((playingData.item.duration_ms % 60000) / 1000).toFixed(0),
-    trackNumber:
-      playingData.item.track_number + "/" + getAlbumData.total_tracks,
-    label: getAlbumData.label,
-    labelUrl:
-      'https://open.spotify.com/search/label%3A "' +
-      getAlbumData.label +
-      '"/albums',
-    cover: playingData.item.album.images[0].url,
-    bpm: Math.round(analysisData.track.tempo),
-    key: [
-      "C",
-      "C♯/D♭",
-      "D",
-      "D♯/E♭",
-      "E",
-      "F",
-      "F♯/G♭",
-      "G",
-      "G♯/A♭",
-      "A",
-      "A♯/B♭",
-      "B",
-      "C",
-    ][analysisData.track.key],
-    mode: analysisData.track.mode === 0 ? "Minor" : "Major",
-    signature: analysisData.track.time_signature + "/4",
-    releaseDate: playingData.item.album.release_date,
+const htmlPrint = (playingData, getAlbumData, analysisData) => {
+  const playing = {
+    artist: {
+      name: playingData.item.artists[0].name,
+      url: playingData.item.artists[0].external_urls.spotify,
+    },
+    album: {
+      name: playingData.item.album.name,
+      url: playingData.item.album.external_urls.spotify,
+      cover: playingData.item.album.images[0].url,
+    },
+    label: {
+      name: getAlbumData.label,
+      url:
+        'https://open.spotify.com/search/label%3A "' +
+        getAlbumData.label +
+        '"/albums',
+    },
+    track: {
+      name:
+        // playingData.item.name,
+        playingData.item.name.length > 25
+          ? playingData.item.name.substring(0, 25) + "..."
+          : playingData.item.name,
+      duration:
+        Math.floor(playingData.item.duration_ms / 60000) +
+        ":" +
+        (((playingData.item.duration_ms % 60000) / 1000).toFixed(0) < 10
+          ? "0"
+          : "") +
+        ((playingData.item.duration_ms % 60000) / 1000).toFixed(0),
+      number: playingData.item.track_number + "/" + getAlbumData.total_tracks,
+      bpm: Math.round(analysisData.track.tempo),
+      key: [
+        "C",
+        "C♯/D♭",
+        "D",
+        "D♯/E♭",
+        "E",
+        "F",
+        "F♯/G♭",
+        "G",
+        "G♯/A♭",
+        "A",
+        "A♯/B♭",
+        "B",
+        "C",
+      ][analysisData.track.key],
+      mode: analysisData.track.mode === 0 ? "Minor" : "Major",
+      signature: analysisData.track.time_signature + "/4",
+      releaseDate: playingData.item.album.release_date,
+    },
   };
 
-  document.getElementById("artist").innerHTML = artist.name;
-  document.getElementById("artist").href = artist.url;
-  document.getElementById("artist").style.textDecoration = "underline";
-  document.getElementById("album").innerHTML = artist.album;
-  document.getElementById("album").href = artist.albumUrl;
-  document.getElementById("album").style.textDecoration = "underline";
-  document.getElementById("track").innerHTML =
-    artist.track + " / " + artist.trackDuration + " / " + artist.trackNumber;
-  document.getElementById("label").innerHTML = artist.label;
-  document.getElementById("label").href = artist.labelUrl;
-  document.getElementById("label").style.textDecoration = "underline";
-  document.getElementById("cover").src = artist.cover;
-  document.getElementById("bpm").innerHTML = artist.bpm;
-  document.getElementById("key").innerHTML = artist.key;
-  document.getElementById("mode").innerHTML = artist.mode;
-  document.getElementById("signature").innerHTML = artist.signature;
-  document.getElementById("releasedate").innerHTML = artist.releaseDate;
+  const playingArray = [
+    [playing.artist, "artist"],
+    [playing.album, "album"],
+    [
+      `${playing.track.name} / ${playing.track.duration} / ${playing.track.number}`,
+      "track",
+    ],
+    [playing.label, "label"],
+    [playing.track.bpm, "bpm"],
+    [playing.track.key, "key"],
+    [playing.track.mode, "mode"],
+    [playing.track.signature, "signature"],
+    [playing.track.releaseDate, "releaseDate"],
+  ];
+
+  const htmlText = (a) => {
+    a.map((x) => {
+      Object.keys(x[0])[1] === "url"
+        ? ((document.getElementById(x[1]).innerHTML = x[0].name),
+          (document.getElementById(x[1]).href = x[0].url),
+          (document.getElementById(x[1]).style.textDecoration = "underline"))
+        : (document.getElementById(x[1]).innerHTML = x[0]);
+    });
+  };
+
+  htmlText(playingArray);
+
+  document.getElementById("cover").src = playing.album.cover;
 };
 
 /// THE API DATA ROUTER
 
 async function dataRouter() {
-  // console.log("dataRouter");
-  try {
-    const data = await spotifyPlaying();
-    const fetchStatus = data[0].status;
+  const data = await spotifyPlaying();
+  const fetchStatus = data[0].status;
+
+  if (fetchStatus === 200) {
     const playingData = data[1];
     const currentTrack =
       data[1].item.name.length > 25
@@ -140,48 +153,39 @@ async function dataRouter() {
     const displayTrack = document
       .getElementById("track")
       .innerHTML.split(" / ")[0];
-
-    if (fetchStatus === 200 && displayTrack != currentTrack) {
+    if (displayTrack != currentTrack) {
       const getAlbumData = await spotifyGetAlbum(playingData);
       const analysisData = await spotifyAnalysis(playingData);
-      await htmlPrint(playingData, getAlbumData, analysisData);
-
-      // Auth has Expired error catcher:
-    } else if (fetchStatus === 401) {
-      window.location.pathname === "/callback.html" &&
-        (document.getElementById("cover").src = "assets/expiredError.png");
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 3000);
-
-      // No new Data error catcher:
-    } else {
-      // console.log("No new data / " + fetchStatus);
+      htmlPrint(playingData, getAlbumData, analysisData);
     }
-
-    // Spotify is not Running Catcher and HTMLreset: (See To Do)
-  } catch (err) {
-    // console.log("error catcher / no info / spotify is not running");
-    // console.log(err);
-    const resetHtml =
-      '<span class="loadingAni" style="text-decoration: none">. . . </span>';
-
-    document.getElementById("artist").innerHTML = resetHtml;
-    document.getElementById("artist").removeAttribute("href");
-    document.getElementById("artist").style.textDecoration = "none";
-    document.getElementById("album").innerHTML = resetHtml;
-    document.getElementById("album").removeAttribute("href");
-    document.getElementById("album").style.textDecoration = "none";
-    document.getElementById("track").innerHTML = resetHtml;
-    document.getElementById("label").innerHTML = resetHtml;
-    document.getElementById("label").removeAttribute("href");
-    document.getElementById("label").style.textDecoration = "none";
-    document.getElementById("cover").src = "assets/spotifyError.png";
-    document.getElementById("bpm").innerHTML = resetHtml;
-    document.getElementById("key").innerHTML = resetHtml;
-    document.getElementById("mode").innerHTML = resetHtml;
-    document.getElementById("signature").innerHTML = resetHtml;
-    document.getElementById("releasedate").innerHTML = resetHtml;
+  } else if (fetchStatus === 401) {
+    window.location.pathname === "/callback.html" &&
+      (document.getElementById("cover").src = "assets/expiredError.png");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 3000);
+  } else if (fetchStatus === 204) {
+    return (
+      [
+        "artist",
+        "album",
+        "label",
+        "track",
+        "bpm",
+        "key",
+        "mode",
+        "signature",
+        "releaseDate",
+      ].map((x) => {
+        document.getElementById(x).innerHTML =
+          '<span class="loadingAni" style="text-decoration: none">. . . </span>';
+        document.getElementById(x).removeAttribute("href");
+        document.getElementById(x).style.textDecoration = "none";
+      }),
+      (document.getElementById("cover").src = "assets/spotifyError.png")
+    );
+  } else {
+    console.log(fetchStatus);
   }
 }
 
