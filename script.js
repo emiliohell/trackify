@@ -141,6 +141,12 @@ const htmlPrint = (playingData, getAlbumData, analysisData) => {
 /// THE API DATA ROUTER
 
 async function dataRouter() {
+  const refresher = (s) => {
+    setInterval(() => {
+      dataRouter();
+    }, s * 1000);
+  };
+
   const data = await spotifyPlaying();
   const fetchStatus = data[0].status;
 
@@ -158,12 +164,14 @@ async function dataRouter() {
       const analysisData = await spotifyAnalysis(playingData);
       htmlPrint(playingData, getAlbumData, analysisData);
     }
+    refresher(10);
   } else if (fetchStatus === 401) {
-    window.location.pathname === "/callback.html" &&
-      (document.getElementById("cover").src = "assets/expiredError.png");
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 3000);
+    if (window.location.pathname === "/callback.html") {
+      (document.getElementById("cover").src = "assets/expiredError.png"),
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 3000);
+    }
   } else if (fetchStatus === 204) {
     return (
       [
@@ -182,18 +190,14 @@ async function dataRouter() {
         document.getElementById(x).removeAttribute("href");
         document.getElementById(x).style.textDecoration = "none";
       }),
-      (document.getElementById("cover").src = "assets/spotifyError.png")
+      (document.getElementById("cover").src = "assets/spotifyError.png"),
+      refresher(10)
     );
   } else {
-    console.log(fetchStatus);
+    console.log(fetchStatus, "Will retry in 10s"), refresher(10);
   }
 }
 
-// THE REFRESHER
-
 if (window.location.pathname === "/callback.html") {
   dataRouter();
-  setInterval(() => {
-    dataRouter();
-  }, 10000);
 }
