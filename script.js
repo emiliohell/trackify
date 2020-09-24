@@ -30,6 +30,7 @@ const headers = {
 };
 
 const spotifyPlaying = async () => {
+  console.log("spotifyPlaying");
   const response = await fetch("https://api.spotify.com/v1/me/player", headers);
   return response.status === 200
     ? [response, (json = await response.json())]
@@ -37,6 +38,7 @@ const spotifyPlaying = async () => {
 };
 
 const spotifyGetAlbum = async (data) => {
+  console.log("spotifyGetAlbum");
   const response = await fetch(
     "https://api.spotify.com/v1/albums/" + data.item.album.id,
     headers
@@ -45,6 +47,7 @@ const spotifyGetAlbum = async (data) => {
 };
 
 const spotifyAnalysis = async (data) => {
+  console.log("spotifyAnalysis");
   const response = await fetch(
     "https://api.spotify.com/v1/audio-analysis/" + data.item.id,
     headers
@@ -55,6 +58,7 @@ const spotifyAnalysis = async (data) => {
 /// TO THE HTML
 
 const htmlPrint = (playingData, getAlbumData, analysisData) => {
+  console.log("htmlPrint");
   const playing = {
     artist: {
       name: playingData.item.artists[0].name,
@@ -141,14 +145,17 @@ const htmlPrint = (playingData, getAlbumData, analysisData) => {
 /// THE API DATA ROUTER
 
 async function dataRouter() {
-  const refresher = (s) => {
-    setInterval(() => {
-      dataRouter();
-    }, s * 1000);
-  };
+  // const refresher = (s) => {
+  //   setInterval(() => {
+  //     dataRouter();
+  //   }, s * 1000);
+  // };
+  console.log("dataRouter");
 
   const data = await spotifyPlaying();
   const fetchStatus = data[0].status;
+
+  console.log(fetchStatus);
 
   if (fetchStatus === 200) {
     const playingData = data[1];
@@ -163,8 +170,8 @@ async function dataRouter() {
       const getAlbumData = await spotifyGetAlbum(playingData);
       const analysisData = await spotifyAnalysis(playingData);
       htmlPrint(playingData, getAlbumData, analysisData);
+      // refresher(10);
     }
-    refresher(10);
   } else if (fetchStatus === 401) {
     if (window.location.pathname === "/callback.html") {
       (document.getElementById("cover").src = "assets/expiredError.png"),
@@ -190,14 +197,23 @@ async function dataRouter() {
         document.getElementById(x).removeAttribute("href");
         document.getElementById(x).style.textDecoration = "none";
       }),
-      (document.getElementById("cover").src = "assets/spotifyError.png"),
-      refresher(10)
+      (document.getElementById("cover").src = "assets/spotifyError.png")
     );
   } else {
-    console.log(fetchStatus, "Will retry in 10s"), refresher(10);
+    console.log(fetchStatus, "Will retry in 10s");
+    // refresher(10);
   }
 }
 
+// if (window.location.pathname === "/callback.html") {
+//   dataRouter();
+// }
+
+// THE REFRESHER
+
 if (window.location.pathname === "/callback.html") {
   dataRouter();
+  setInterval(() => {
+    dataRouter();
+  }, 10000);
 }
